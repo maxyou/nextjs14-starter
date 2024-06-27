@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import TodoListPage from './todolist'
+import DetailPage from './detail'
 
 const ClientPage: React.FC = () => {
 
@@ -15,7 +15,7 @@ const ClientPage: React.FC = () => {
                     {
                         jwtUser && JSON.stringify({ jwtUser })
                     } */}
-                    <TodoListPage />
+                    <DetailPage />
                 </div>
         </div>
     )

@@ -4,17 +4,20 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 
-const TodoListPage: React.FC = () => {
+const ListPage: React.FC = () => {
 
   const router = useRouter();
 
   return (
 
     <div className="container mx-auto p-4">
-       sub todo list
+      <div>
+        list page
+        </div>
+
     </div>
 
   );
 };
 
-export default TodoListPage
+export default ListPage
