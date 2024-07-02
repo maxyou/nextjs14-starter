@@ -4,6 +4,7 @@ import { UserRow } from '../models/interfaces';
 
 export const createUser = async (name: string, email: string): Promise<User> => {
     const db = await getDb();
+    console.log(name, email);
     const result = await db.run('INSERT INTO users (name, email) VALUES (?, ?)', [name, email]);
     return new User(name, email, result.lastID);
 };

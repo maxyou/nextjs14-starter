@@ -1,32 +1,74 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 import { createUser, getUser, updateUser, deleteUser, getAllUsers } from '../../lib/userRepository';
+import { json } from 'micro';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+// export async function GET(req: NextApiRequest, res: NextApiResponse) {
+//     console.log("api GET");
+//     if (req.query && req.query.id) {
+//         console.log(req.query.id);
+//         const user = getUser(Number(req.query.id));
+//         if (user) {
+//             res.status(200).json(user);
+//         } else {
+//             res.status(404).json({ message: 'User not found' });
+//         }
+//     } else {
+//         console.log("api GET all users");
+//         const users = getAllUsers();
+//         res.status(200).json(users);
+//     }
+// }
+
+export async function GET(request: NextRequest) {
     console.log("api GET");
-    if (req.query && req.query.id) {
-        console.log(req.query.id);
-        const user = getUser(Number(req.query.id));
+
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (id) {
+        console.log(id);
+        const user = await getUser(Number(id));
         if (user) {
-            res.status(200).json(user);
+            return NextResponse.json(user, { status: 200 });
         } else {
-            res.status(404).json({ message: 'User not found' });
+            return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
     } else {
         console.log("api GET all users");
-        const users = getAllUsers();
-        res.status(200).json(users);
+        const users = await getAllUsers();
+        return NextResponse.json(users, { status: 200 });
     }
 }
 
-export async function POST(request: NextApiRequest) {
-    console.log("api POST");
-    if(request.body == undefined) 
-        return { message: 'Invalid request' };
+// export async function POST(request: NextRequest, response: NextResponse) {
+//     console.log("api POST");
+//     if(request.body == undefined) 
+//         return { message: 'Invalid request' };
 
-    const newUser = createUser(request.body.name, request.body.email);
-    return newUser;
+//     const body = await request.json();
+//     console.log(body.name, body.email);
+//     console.log(JSON.stringify(body));
+
+//     const newUser = createUser(body.name, body.email);
+//     return newUser;
+// }
+export async function POST(request: NextRequest) {
+    console.log("api POST");
+
+    try {
+        const body = await request.json();
+        console.log(body.name, body.email);
+        console.log(JSON.stringify(body));
+
+        const newUser = await createUser(body.name, body.email);
+        return NextResponse.json(newUser, { status: 201 });
+    } catch (error) {
+        console.error("Error parsing JSON:", error);
+        return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
+    }
 }
- 
+
 export async function PUT(request: Request) {}
  
 export async function DELETE(request: Request) {}

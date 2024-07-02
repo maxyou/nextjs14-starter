@@ -17,6 +17,8 @@ const UserEdit = () => {
   }, []);
 
   const addUser = async () => {
+    console.log("addUser:");
+    console.log(name, email);
       const response = await fetch('/api/user', {
           method: 'POST',
           headers: {
