@@ -27,8 +27,8 @@ export const getDb = async () => {
         // throw new Error('Database not initialized');
         await initDb();        
     }
-    console.log("getDb");
-    console.log(db);
-    console.log("after getDb print db");
+    // console.log("getDb");
+    // console.log(db);
+    // console.log("after getDb print db");
     return db
 };

@@ -18,14 +18,27 @@ export const getUser = async (id: number): Promise<User | null> => {
     return null;
 };
 
-export const updateUser = async (id: number, name: string, email: string): Promise<void> => {
+export const updateUser = async (id: number, name: string, email: string): Promise<User | null> => {
     const db = await getDb();
     await db.run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id]);
+    const updatedRow: UserRow | undefined = await db.get('SELECT * FROM users WHERE id = ?', id);
+    if (updatedRow) {
+        return new User(updatedRow.name, updatedRow.email, updatedRow.id);
+    }
+    return null;
 };
 
-export const deleteUser = async (id: number): Promise<void> => {
+export const deleteUser = async (id: number): Promise<boolean> => {
     const db = await getDb();
-    await db.run('DELETE FROM users WHERE id = ?', [id]);
+    const result = await db.run('DELETE FROM users WHERE id = ?', id);
+
+    // Check if result and result.changes are defined and valid
+    if (result && typeof result.changes === 'number') {
+        return result.changes > 0;
+    } else {
+        console.error('Unexpected result format:', result);
+        return false;
+    }
 };
 
 export const getAllUsers = async (): Promise<User[]> => {

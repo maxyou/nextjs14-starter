@@ -33,15 +33,15 @@ const UserEdit = () => {
   };
 
   const deleteUser = async (id: number) => {
-      await fetch(`/api/user`, {
-          method: 'DELETE',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ id }),
-      });
-      setUsers(users.filter(user => user.id !== id));
-  };
+    console.log("deleteUser:" + id);
+    await fetch(`/api/user?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    setUsers(users.filter(user => user.id !== id));
+};
 
   return (
       <div>
