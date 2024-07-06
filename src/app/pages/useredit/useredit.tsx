@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from "next/link"
-import  User from '../../models/User';
+import User from '../../models/User';
 
 const UserEdit = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -11,25 +11,28 @@ const UserEdit = () => {
   const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
-      fetch('/api/user')
-          .then(response => response.json())
-          .then(data => setUsers(data));
+      fetchUsers();
   }, []);
+
+  const fetchUsers = async () => {
+    const response = await fetch('/api/user');
+    const data = await response.json();
+    setUsers(data);
+  };
 
   const addUser = async () => {
     console.log("addUser:");
     console.log(name, email);
-      const response = await fetch('/api/user', {
+      await fetch('/api/user', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({ name, email }),
       });
-      const newUser = await response.json();
-      setUsers([...users, newUser]);
       setName('');
       setEmail('');
+      fetchUsers();
   };
 
   const deleteUser = async (id: number) => {
@@ -40,8 +43,8 @@ const UserEdit = () => {
             'Content-Type': 'application/json',
         },
     });
-    setUsers(users.filter(user => user.id !== id));
-};
+    fetchUsers();
+  };
 
   return (
       <div>
