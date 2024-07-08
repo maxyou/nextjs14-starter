@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
 import User from '../../models/User';
+import { createUser, getUser, updateUser, deleteUser, getAllUsers } from '../../lib/userRepository';
+import { serverActionfetchUsers } from './serveraction';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
@@ -14,10 +16,18 @@ const UserEdit = () => {
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
     const [editUserId, setEditUserId] = useState<number | null>(null);
 
+    // async function serverActionfetchUsers() {
+    //     'use server'; // 指示这个函数在服务器端运行
+    //     console.log("server action GET all users");
+    //     const users = await getAllUsers();
+    //     return users;
+    //   }
+
     const fetchUsers = async () => {
-        const response = await fetch('/api/user');
-        const data = await response.json();
-        setUsers(data);
+        // const response = await fetch('/api/user');
+        // const data = await response.json();
+        const data = await serverActionfetchUsers();
+        setUsers(JSON.parse(data) as User[]);
     };
 
     useEffect(() => {
