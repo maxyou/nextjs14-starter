@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import Link from "next/link";
 import User from '../../models/User';
 import { createUser, getUser, updateUser, deleteUser, getAllUsers } from '../../lib/userRepository';
-import { serverActionfetchUsers } from './serveraction';
+import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serveraction';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
@@ -50,26 +50,28 @@ const UserEdit = () => {
         e.preventDefault();
         if (isEditMode) {
             if (editUserId !== null) {
-                const response = await fetch(`/api/user`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ id:editUserId, name, email }),
-                });
-                const updatedUser = await response.json();
+                // const response = await fetch(`/api/user`, {
+                //     method: 'PUT',
+                //     headers: {
+                //         'Content-Type': 'application/json',
+                //     },
+                //     body: JSON.stringify({ id:editUserId, name, email }),
+                // });
+                // const updatedUser = await response.json();
+                const updatedUser = await serverActionUpdateUser({id: editUserId, name, email});
                 console.log(updatedUser);
                 fetchUsers();
             }
         } else {
-            const response = await fetch('/api/user', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, email }),
-            });
-            const newUser = await response.json();
+            // const response = await fetch('/api/user', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ name, email }),
+            // });
+            // const newUser = await response.json();
+            const newUser = await serverActionAddUser({name, email});
             console.log(newUser);
             fetchUsers();
         }
@@ -77,12 +79,13 @@ const UserEdit = () => {
     };
 
     const deleteUser = async (id: number) => {
-        await fetch(`/api/user?id=${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
+        // await fetch(`/api/user?id=${id}`, {
+        //     method: 'DELETE',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        // });
+        await serverActionDeleteUser(id);
         fetchUsers();
     };
 
