@@ -57,7 +57,7 @@ const UserEdit = () => {
                 //     body: JSON.stringify({ id:editUserId, name, email }),
                 // });
                 // const updatedUser = await response.json();
-                const updatedUser = await serverActionUpdateUser({id: editUserId, name, email});
+                const updatedUser = await serverActionUpdateUser({ id: editUserId, name, email });
                 console.log(updatedUser);
                 fetchUsers();
             }
@@ -70,22 +70,28 @@ const UserEdit = () => {
             //     body: JSON.stringify({ name, email }),
             // });
             // const newUser = await response.json();
-            const newUser = await serverActionAddUser({name, email});
+            const newUser = await serverActionAddUser({ name, email });
             console.log(newUser);
             fetchUsers();
         }
         closeModal();
     };
 
-    const deleteUser = async (id: number) => {
+    const deleteUser = async (id: number, name:string) => {
         // await fetch(`/api/user?id=${id}`, {
         //     method: 'DELETE',
         //     headers: {
         //         'Content-Type': 'application/json',
         //     },
         // });
-        await serverActionDeleteUser(id);
-        fetchUsers();
+
+        if (window.confirm(`Confirm to delete ${name} ?`)) {
+            await serverActionDeleteUser(id);
+            fetchUsers();
+        } else {
+            // alert("再见");
+        }
+
     };
 
     const openEditModal = (user: User) => {
@@ -119,7 +125,7 @@ const UserEdit = () => {
                                 Edit
                             </button>
                             <button
-                                onClick={() => deleteUser(user.id!)}
+                                onClick={() => deleteUser(user.id!, user.name)}
                                 className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                             >
                                 Del
