@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from "next/link"
-import CommentList from '../comment/comment';
+import CommentList from '../comment/Comment';
 
 const DetailPage: React.FC = () => {
 

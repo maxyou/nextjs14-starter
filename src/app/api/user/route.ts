@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 import { createUser, getUser, updateUser, deleteUser, getAllUsers } from '../../lib/userRepository';
-import { json } from 'micro';
 
 
 export async function GET(request: NextRequest) {

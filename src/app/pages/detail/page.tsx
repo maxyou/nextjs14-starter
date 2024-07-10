@@ -1,5 +1,4 @@
-import { headers, cookies } from 'next/headers'
-import PageClient from './pageclient'
+import PageClient from './PageClient'
 
 export default async function PageServer() {
   

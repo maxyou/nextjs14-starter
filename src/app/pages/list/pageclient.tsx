@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import ListPage from './list'
+import ListPage from './List'
 
 
 const ClientPage: React.FC = () => {

@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import UserEditPage from './useredit'
+import UserEditPage from './UserEdit'
 
 
 const ClientPage: React.FC = () => {

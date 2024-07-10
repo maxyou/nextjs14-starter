@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react';
-import DetailPage from './detail'
+import DetailPage from './Detail'
 
 const ClientPage: React.FC = () => {
 
