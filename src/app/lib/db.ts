@@ -11,10 +11,14 @@ export const initDb = async () => {
     });
 
     await db.exec(`
-        CREATE TABLE IF NOT EXISTS users (
+        CREATE TABLE User (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            authType TEXT NOT NULL,
             name TEXT NOT NULL,
-            email TEXT NOT NULL
+            nickname TEXT,
+            email TEXT,
+            password TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
     `);
     // console.log("after initDb");
@@ -25,7 +29,7 @@ export const initDb = async () => {
 export const getDb = async () => {
     if (!db) {
         // throw new Error('Database not initialized');
-        await initDb();        
+        await initDb();
     }
     // console.log("getDb");
     // console.log(db);
