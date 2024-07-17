@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
-import User from '../../../models/User';
+import User from '../../../dto/User';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content

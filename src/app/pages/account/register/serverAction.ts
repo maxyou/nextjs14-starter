@@ -1,6 +1,6 @@
 'use server';
 import { createUser, getUser, updateUser, deleteUser, getAllUsers } from '../../../lib/userRepository';
-import User from '../../../models/User';
+import User from '../../../dto/User';
 
 export async function serverActionfetchUsers(): Promise<string> {
     console.log("server action GET all users");
