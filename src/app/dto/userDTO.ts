@@ -1,7 +1,9 @@
 // models/interfaces.ts
 
 export interface UserDTO {
-    id: number;
+    id: string;
     name: string;
+    nickname: string;
+    avatar: string;
     email: string;
 }

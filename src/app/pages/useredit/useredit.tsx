@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
-import User from '../../dto/User';
+import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
@@ -13,7 +13,7 @@ const UserEdit = () => {
     const [email, setEmail] = useState<string>('');
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [editUserId, setEditUserId] = useState<number | null>(null);
+    const [editUserId, setEditUserId] = useState<string | null>(null);
 
     // async function serverActionfetchUsers() {
     //     'use server'; // 指示这个函数在服务器端运行
@@ -96,8 +96,8 @@ const UserEdit = () => {
 
     const openEditModal = (user: User) => {
         setName(user.name);
-        setEmail(user.email);
-        setEditUserId(user.id || null);
+        setEmail(user.email||'');
+        setEditUserId(user.id);
         setIsEditMode(true);
         openModal();
     };
