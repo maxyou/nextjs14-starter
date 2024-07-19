@@ -14,7 +14,7 @@ model User {
   id        String    @id @default(uuid())
   authType  String
   name      String
-  nickname  String?
+  nickName  String?
   avatar    String?
   email     String?   @unique
   password  String?

@@ -4,16 +4,20 @@ import ReactModal from 'react-modal';
 import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
+import { UserDTO, UserAdd } from '@/app/dto/User';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
 const UserEdit = () => {
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<UserDTO[]>([]);
     const [name, setName] = useState<string>('');
+    const [nickName, setNickName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const [isEditMode, setIsEditMode] = useState<boolean>(false);
-    const [editUserId, setEditUserId] = useState<string | null>(null);
+    // const [editUserId, setEditUserId] = useState<string>('');
+    const [editUserDTO, setEditUserDTO] = useState<UserDTO>();
 
     // async function serverActionfetchUsers() {
     //     'use server'; // 指示这个函数在服务器端运行
@@ -26,41 +30,49 @@ const UserEdit = () => {
         // const response = await fetch('/api/user');
         // const data = await response.json();
         const data = await serverActionfetchUsers();
-        setUsers(JSON.parse(data) as User[]);
+        setUsers(JSON.parse(data) as UserDTO[]);
     };
 
     useEffect(() => {
         fetchUsers();
     }, []);
 
-    const openModal = () => {
+    const openAddModal = () => {
+        setName('');
+        setNickName('');
+        setEmail('');
+        setPassword('');
+        setIsEditMode(false);
+        setModalIsOpen(true);
+    };
+
+    const openEditModal = (user: UserDTO) => {
+        setName(user.name);
+        setNickName(user.nickName || '');
+        setEmail(user.email || '');
+        setEditUserDTO(user);
+        setIsEditMode(true);
         setModalIsOpen(true);
     };
 
     const closeModal = () => {
         setModalIsOpen(false);
-        setName('');
-        setEmail('');
-        setIsEditMode(false);
-        setEditUserId(null);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (isEditMode) {
-            if (editUserId !== null) {
-                // const response = await fetch(`/api/user`, {
-                //     method: 'PUT',
-                //     headers: {
-                //         'Content-Type': 'application/json',
-                //     },
-                //     body: JSON.stringify({ id:editUserId, name, email }),
-                // });
-                // const updatedUser = await response.json();
-                const updatedUser = await serverActionUpdateUser({ id: editUserId, name, email });
-                console.log(updatedUser);
-                fetchUsers();
-            }
+            // const response = await fetch(`/api/user`, {
+            //     method: 'PUT',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify({ id:editUserId, name, email }),
+            // });
+            // const updatedUser = await response.json();            
+            const updatedUser = await serverActionUpdateUser({ ...editUserDTO, name, nickName, email } as UserDTO);
+            console.log(updatedUser);
+            fetchUsers();
         } else {
             // const response = await fetch('/api/user', {
             //     method: 'POST',
@@ -70,14 +82,14 @@ const UserEdit = () => {
             //     body: JSON.stringify({ name, email }),
             // });
             // const newUser = await response.json();
-            const newUser = await serverActionAddUser({ name, email });
+            const newUser = await serverActionAddUser({ name, email, password, nickName, authType: 'register' });
             console.log(newUser);
             fetchUsers();
         }
         closeModal();
     };
 
-    const deleteUser = async (id: number, name:string) => {
+    const deleteUser = async (id: string, name: string) => {
         // await fetch(`/api/user?id=${id}`, {
         //     method: 'DELETE',
         //     headers: {
@@ -94,19 +106,12 @@ const UserEdit = () => {
 
     };
 
-    const openEditModal = (user: User) => {
-        setName(user.name);
-        setEmail(user.email||'');
-        setEditUserId(user.id);
-        setIsEditMode(true);
-        openModal();
-    };
 
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4">User Edit</h1>
             <button
-                onClick={openModal}
+                onClick={openAddModal}
                 className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
                 Add User
@@ -115,7 +120,7 @@ const UserEdit = () => {
                 {users.map((user) => (
                     <li key={user.id} className="flex justify-between items-center p-2 border-b border-gray-300">
                         <div>
-                            {user.name} ({user.email})
+                            {user.name}({user.nickName}) ({user.email})
                         </div>
                         <div>
                             <button
@@ -160,6 +165,17 @@ const UserEdit = () => {
                         />
                     </div>
                     <div>
+                        <label htmlFor="nickName" className="block text-sm font-medium text-gray-700">NickName</label>
+                        <input
+                            type="text"
+                            id="nickName"
+                            value={nickName}
+                            onChange={(e) => setNickName(e.target.value)}
+                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            required
+                        />
+                    </div>
+                    <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
                         <input
                             type="email"
@@ -170,6 +186,20 @@ const UserEdit = () => {
                             required
                         />
                     </div>
+                    {
+                        isEditMode ? null :
+                            <div>
+                                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    required
+                                />
+                            </div>
+                    }
                     <div className="flex justify-end">
                         <button
                             type="submit"
