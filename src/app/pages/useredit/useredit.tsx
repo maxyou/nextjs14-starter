@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
 import { UserDTO, UserAdd } from '@/app/dto/User';
+import { codeConfig } from '@/config.mjs';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
@@ -19,18 +20,18 @@ const UserEdit = () => {
     // const [editUserId, setEditUserId] = useState<string>('');
     const [editUserDTO, setEditUserDTO] = useState<UserDTO>();
 
-    // async function serverActionfetchUsers() {
-    //     'use server'; // 指示这个函数在服务器端运行
-    //     console.log("server action GET all users");
-    //     const users = await getAllUsers();
-    //     return users;
-    //   }
-
     const fetchUsers = async () => {
-        // const response = await fetch('/api/user');
-        // const data = await response.json();
-        const data = await serverActionfetchUsers();
-        setUsers(JSON.parse(data) as UserDTO[]);
+        
+        console.log(codeConfig.fetchServerCode);
+
+        if(codeConfig.fetchServerCode === 'api') {
+            const response = await fetch('/api/user');
+            const data = await response.json();
+            setUsers(JSON.parse(data) as UserDTO[]);
+        }else if(codeConfig.fetchServerCode === 'serverAction') {
+            const data = await serverActionfetchUsers();
+            setUsers(JSON.parse(data) as UserDTO[]);
+        }
     };
 
     useEffect(() => {
