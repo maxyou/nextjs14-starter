@@ -21,15 +21,16 @@ const UserEdit = () => {
     const [editUserDTO, setEditUserDTO] = useState<UserDTO>();
 
     const fetchUsers = async () => {
-        
+
         console.log(codeConfig.fetchServerCode);
 
-        if(codeConfig.fetchServerCode === 'api') {
+        if (codeConfig.fetchServerCode === 'api') {
             const response = await fetch('/api/user');
             const data = await response.json();
-            setUsers(JSON.parse(data) as UserDTO[]);
-        }else if(codeConfig.fetchServerCode === 'serverAction') {
+            setUsers(data);
+        } else if (codeConfig.fetchServerCode === 'serverAction') {
             const data = await serverActionfetchUsers();
+            console.log(data);
             setUsers(JSON.parse(data) as UserDTO[]);
         }
     };
@@ -63,16 +64,21 @@ const UserEdit = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (isEditMode) {
-            // const response = await fetch(`/api/user`, {
-            //     method: 'PUT',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ id:editUserId, name, email }),
-            // });
-            // const updatedUser = await response.json();            
-            const updatedUser = await serverActionUpdateUser({ ...editUserDTO, name, nickName, email } as UserDTO);
-            console.log(updatedUser);
+            console.log(codeConfig.fetchServerCode);
+            if (codeConfig.fetchServerCode === 'api') {
+                const response = await fetch(`/api/user`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ ...editUserDTO, name, nickName, email }),
+                });
+                const updatedUser = await response.json();
+                console.log(updatedUser);
+            } else if (codeConfig.fetchServerCode === 'serverAction') {
+                const updatedUser = await serverActionUpdateUser({ ...editUserDTO, name, nickName, email } as UserDTO);
+                console.log(updatedUser);
+            }
             fetchUsers();
         } else {
             // const response = await fetch('/api/user', {

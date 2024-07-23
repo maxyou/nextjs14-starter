@@ -1,12 +1,15 @@
 'use server';
-import { UserAdd, UserDTO } from '@/app/dto/User';
+import { UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
 import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function serverActionfetchUsers(): Promise<string> {
     console.log("server action GET all users");
-    const users = await prisma.user.findMany();
-    return JSON.stringify(users);
+    const users = await prisma.user.findMany();    
+    console.log(users);
+    console.log(JSON.stringify(users));
+    const usersDTO = users.map(toUserDTO);
+    return JSON.stringify(usersDTO);
 }
 
 export async function serverActionAddUser(UserAdd:UserAdd): Promise<string> {
@@ -14,7 +17,8 @@ export async function serverActionAddUser(UserAdd:UserAdd): Promise<string> {
     const newUser = await prisma.user.create({
         data: UserAdd
     });
-    return JSON.stringify(newUser);
+    const newUserDTO = toUserDTO(newUser);
+    return JSON.stringify(newUserDTO);
 }
 
 export async function serverActionUpdateUser(user:UserDTO): Promise<string> {
@@ -23,7 +27,8 @@ export async function serverActionUpdateUser(user:UserDTO): Promise<string> {
         where: { id: user.id },
         data: user    
     });
-    return JSON.stringify(updatedUser);
+    const updatedUserDTO = toUserDTO(updatedUser);
+    return JSON.stringify(updatedUserDTO);
 }
 
 export async function serverActionDeleteUser(id:string): Promise<string> {
@@ -31,5 +36,6 @@ export async function serverActionDeleteUser(id:string): Promise<string> {
     const deletedUser = await prisma.user.delete({
         where: { id }
     });
-    return JSON.stringify(deletedUser);
+    const deletedUserDTO = toUserDTO(deletedUser);
+    return JSON.stringify(deletedUserDTO);
 }
