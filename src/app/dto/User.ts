@@ -10,7 +10,12 @@ export interface UserDTO {
     email?: string | null;
 }
 
-export const toUserDTO = (user:User): UserDTO => {
+export const toUserDTO = (user?:User|null): UserDTO | null => {
+
+    if (!user) {
+        return null;
+    }
+
     return {
         id: user.id,
         authType: user.authType,

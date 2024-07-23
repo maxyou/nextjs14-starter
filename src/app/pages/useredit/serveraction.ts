@@ -6,9 +6,8 @@ const prisma = new PrismaClient();
 export async function serverActionfetchUsers(): Promise<string> {
     console.log("server action GET all users");
     const users = await prisma.user.findMany();    
-    console.log(users);
-    console.log(JSON.stringify(users));
     const usersDTO = users.map(toUserDTO);
+    console.log(JSON.stringify(usersDTO));
     return JSON.stringify(usersDTO);
 }
 
@@ -18,6 +17,7 @@ export async function serverActionAddUser(UserAdd:UserAdd): Promise<string> {
         data: UserAdd
     });
     const newUserDTO = toUserDTO(newUser);
+    console.log(JSON.stringify(newUserDTO));
     return JSON.stringify(newUserDTO);
 }
 
@@ -28,6 +28,7 @@ export async function serverActionUpdateUser(user:UserDTO): Promise<string> {
         data: user    
     });
     const updatedUserDTO = toUserDTO(updatedUser);
+    console.log(JSON.stringify(updatedUserDTO));
     return JSON.stringify(updatedUserDTO);
 }
 
@@ -37,5 +38,6 @@ export async function serverActionDeleteUser(id:string): Promise<string> {
         where: { id }
     });
     const deletedUserDTO = toUserDTO(deletedUser);
+    console.log(JSON.stringify(deletedUserDTO));
     return JSON.stringify(deletedUserDTO);
 }

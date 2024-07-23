@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
+import { UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -13,14 +14,15 @@ export async function GET(request: NextRequest) {
         console.log(id);
         const user = await prisma.user.findUnique({ where: { id } });
         if (user) {
-            return NextResponse.json(user, { status: 200 });
+            return NextResponse.json(toUserDTO(user), { status: 200 });
         } else {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
     } else {
         console.log("api GET all users");
         const users = await prisma.user.findMany();
-        return NextResponse.json(users, { status: 200 });
+        const usersDTO = users.map(toUserDTO);
+        return NextResponse.json(usersDTO, { status: 200 });
     }
 }
 
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
                 password: body.password,
             },
         });
-        return NextResponse.json(newUser, { status: 201 });
+        return NextResponse.json(toUserDTO(newUser), { status: 201 });
     } catch (error) {
         console.error("Error parsing JSON:", error);
         return NextResponse.json({ message: 'Invalid request body' }, { status: 400 });
@@ -53,19 +55,17 @@ export async function PUT(request: NextRequest) {
     console.log("api PUT");
 
     try {
-        const body = await request.json();
-        const { id, name, email } = body;
-
-        if (!id) {
+        const body = await request.json() as UserDTO;
+        if (!body.id) {
             return NextResponse.json({ message: 'User ID is required' }, { status: 400 });
         }
 
         const updatedUser = await prisma.user.update({
-            where: { id },
-            data: { name, email },
+            where: { id: body.id },
+            data: body,
         });
         if (updatedUser) {
-            return NextResponse.json(updatedUser, { status: 200 });
+            return NextResponse.json(toUserDTO(updatedUser), { status: 200 });
         } else {
             return NextResponse.json({ message: 'User not found' }, { status: 404 });
         }
@@ -80,7 +80,7 @@ export async function DELETE(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
-    console.log('delete id:'+id);
+    console.log('delete id:' + id);
 
     if (!id) {
         return NextResponse.json({ message: 'User ID is required' }, { status: 400 });

@@ -27,6 +27,7 @@ const UserEdit = () => {
         if (codeConfig.fetchServerCode === 'api') {
             const response = await fetch('/api/user');
             const data = await response.json();
+            console.log(data);
             setUsers(data);
         } else if (codeConfig.fetchServerCode === 'serverAction') {
             const data = await serverActionfetchUsers();
