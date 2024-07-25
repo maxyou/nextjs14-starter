@@ -1,6 +1,11 @@
 // models/interfaces.ts
 import { PrismaClient, User } from '@prisma/client';
 
+export interface UserUnique {
+    authType: string;
+    name: string;
+}
+
 export interface UserDTO {
     id: string;
     authType: string;
@@ -33,4 +38,14 @@ export interface UserAdd {
     avatar?: string;
     email?: string;
     password?: string;
+}
+
+export interface JwtUser extends UserDTO {
+    // id: string;
+    // name: string;
+    // nickName?: string;
+    // email?: string;
+    // avatar?: string;
+    // authType: string;
+    // sub?: string;
 }

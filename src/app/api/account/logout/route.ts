@@ -2,9 +2,9 @@ import { NextResponse, NextRequest } from 'next/server';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import { JwtUser, getJoseJwtToken } from '@/utilities/calc';
+import { getJoseJwtToken } from '@/utilities/calc';
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
-import { UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
+import { JwtUser, UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
 
 const prisma = new PrismaClient();
 

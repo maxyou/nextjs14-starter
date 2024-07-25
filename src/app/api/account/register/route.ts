@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 
   try {
     const newUser = await prisma.user.create({
-      data: {...body, logined: true},
+      data: {...body, authType:'register', logined: true},
     });
 
     console.log(`prisma.user.create return: ${JSON.stringify(newUser)}`)
