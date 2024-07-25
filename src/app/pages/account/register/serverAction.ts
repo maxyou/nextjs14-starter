@@ -9,10 +9,10 @@ export async function serverActionfetchUsers(): Promise<string> {
     return JSON.stringify(users);
 }
 
-export async function serverActionAddUser(UserAdd:UserAdd): Promise<string> {
+export async function serverActionAddUser(userAdd:UserAdd): Promise<string> {
     console.log("server action POST add user");
     const newUser = await prisma.user.create({
-        data: UserAdd
+        data: userAdd
     });
     return JSON.stringify(newUser);
 }

@@ -6,6 +6,11 @@ export interface UserUnique {
     name: string;
 }
 
+export interface UserLogin {
+    name: string;
+    password: string;
+}
+
 export interface UserDTO {
     id: string;
     authType: string;

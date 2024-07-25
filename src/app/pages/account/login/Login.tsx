@@ -5,13 +5,13 @@ import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
 import { UserDTO, UserAdd } from '@/app/dto/User';
 import { codeConfig } from '@/config.mjs';
-import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
+import { serverActionLogin } from './serverAction';
 import { ROUTES } from '@/routes';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
 const Login = () => {
-    
+
   const router = useRouter();
 
   const [name, setName] = useState('');
@@ -32,6 +32,41 @@ const Login = () => {
   }
 
   const handleLogin = () => {
+
+    if (codeConfig.fetchServerCode === 'api') {
+      handleLoginApi();
+    } else if (codeConfig.fetchServerCode === 'serverAction') {
+      handleLoginServerAction();
+    }
+  }
+
+  const handleLoginServerAction = () => {
+      
+      const userLogin = {
+        name: name,
+        password: password,
+      };
+  
+      console.log(`server action login, user name: ${name}, password: ${password}`);
+
+      serverActionLogin(userLogin)
+        .then((data) => {
+          console.log(data);
+          const ret:{code:number, message:string, data:UserDTO} = JSON.parse(data);
+          if (ret.code === 0) {
+            // router.refresh();
+            // redirect to todolist page
+            // router.push(`/biz/todolist?${Math.random().toString()}`);
+            console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
+            router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
+          } else {
+            setSuggestion(ret.message);
+            console.log(`Login failed: ${ret.message}`);
+          }
+        });
+  }
+
+  const handleLoginApi = () => {
 
     const url = ROUTES.api.userLogin;
     const options = {
@@ -113,9 +148,9 @@ const Login = () => {
           </button>
         </div>
 
-        
+
       </div>
-      
+
     </div>
   );
 }
