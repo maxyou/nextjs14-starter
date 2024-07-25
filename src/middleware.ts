@@ -3,21 +3,20 @@ import type { NextRequest } from 'next/server'
 // import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
 import { JwtUser, joseVerify, getJoseJwtToken } from "./utilities/calc";
+import { ROUTES } from '@/routes';
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
 
+  console.log('ROUTES.user.edit:', ROUTES.user.edit)
+
     console.log('middleware.ts, request.url:', request.url)
-    console.log('middleware.ts, request.nextUrl.pathname:', request.nextUrl.pathname)
+    // console.log('middleware.ts, request.nextUrl.pathname:', request.nextUrl.pathname)
     
-    // const { pathname } = request.nextUrl;
-    // if(pathname.includes('/user/')) {
-    //   return NextResponse.next({
-    //     // request: {
-    //     //   headers
-    //     // }
-    //   });
-    // }
+    const { pathname } = request.nextUrl;
+    if(!middlewareMatcher(pathname)) {
+      return NextResponse.next();
+    }
 
     // const { pathname } = request.nextUrl;
     // if(
@@ -31,7 +30,6 @@ export async function middleware(request: NextRequest) {
     //     // }
     //   });
     // }
-
 
     const headers = new Headers(request.headers);
     // headers.set('middlewareSet', 'mydata');
@@ -53,8 +51,8 @@ export async function middleware(request: NextRequest) {
     
     if(decodedToken.code !== 0) {     
 
-      console.log('middleware.ts, decodedToken.code !== 0, redirect to /user/login')
-      return NextResponse.redirect(new URL('/pages/account/login', request.url))
+      console.log('middleware.ts, decodedToken.code !== 0, redirect to ROUTES.account.login')
+      return NextResponse.redirect(new URL(ROUTES.account.login, request.url))
     }
 
     const jwtUser = decodedToken.jwtPayloadWithUser!.jwtUser;
@@ -79,14 +77,35 @@ export async function middleware(request: NextRequest) {
 }
 
 
-// See "Matching Paths" below to learn more
+function middlewareMatcher(pathname: string) {
+    // Return true if the middleware should be executed for the given URL
+
+    console.log('middlewareMatcher, pathname:', pathname)
+
+    switch (pathname) {
+      case ROUTES.user.edit:
+      // case ROUTES.account.register:
+      // case ROUTES.account.login:
+      // case ROUTES.api.userLogin:
+      // case ROUTES.api.userRegister:
+          return true;
+      default:
+          return false;
+  }
+}
+
+//Does not support variables, only hard-coded paths
 export const config = {
     matcher: [
+      '/(.*)',
+      // '/:path*',
       // '/about',
       // '/api/(.*)',     //ok
       // '/api/user/(.*)',
       // '/api/user',
       // '/pages/(.*)',
       // '/pages/user-edit',
+      // ROUTES.user.edit,
+      // `${ROUTES.user.edit}`,
     ],
 }
