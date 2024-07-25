@@ -8,6 +8,7 @@ export const ROUTES = {
     register: '/pages/account/register',
     login: '/pages/account/login',
   },
+  home: '/pages',
   api: {
     userLogin: '/api/account/login',
     userRegister: '/api/account/register',

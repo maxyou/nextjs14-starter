@@ -6,6 +6,7 @@ import { PrismaClient, User } from '@prisma/client';
 import { UserDTO, UserAdd } from '@/app/dto/User';
 import { codeConfig } from '@/config.mjs';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
+import { ROUTES } from '@/routes';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
@@ -27,12 +28,12 @@ const Login = () => {
   };
 
   const handleGotoRegister = () => {
-    router.push('/user/register');
+    router.push(ROUTES.account.register);
   }
 
   const handleLogin = () => {
 
-    const url = "/api/user/login";
+    const url = ROUTES.api.userLogin;
     const options = {
       method: "POST",
       headers: {
@@ -54,7 +55,8 @@ const Login = () => {
         if (data.code === 0) {
           // router.refresh();
           // redirect to todolist page
-          router.push(`/biz/todolist?${Math.random().toString()}`);
+          // router.push(`/biz/todolist?${Math.random().toString()}`);
+          router.push(ROUTES.home);
         } else {
           setSuggestion(data.message);
           console.log(`Login failed: ${data.message}`);
