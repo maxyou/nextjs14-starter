@@ -5,13 +5,13 @@ import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
 import { UserDTO, UserAdd, JwtUser } from '@/app/dto/User';
 import { codeConfig } from '@/config.mjs';
-import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
+import { serverActionRegister } from './serverAction';
 import { ROUTES } from '@/routes';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
 const Register = () => {
-    
+
   const router = useRouter();
 
   const [name, setName] = useState('');
@@ -52,6 +52,44 @@ const Register = () => {
 
   const handleRegister = () => {
 
+    if (codeConfig.fetchServerCode === 'api') {
+      handleRegisterApi();
+    } else if (codeConfig.fetchServerCode === 'serverAction') {
+      handleRegisterServerAction();
+    }
+  }
+
+
+  const handleRegisterServerAction = () => {
+
+    const userRegister = {
+      authType: 'register',
+      name: name,
+      email: email,
+      password: password,
+    };
+
+    console.log(`server action register, user name: ${name}, password: ${password}`);
+
+    serverActionRegister(userRegister)
+      .then((data) => {
+        console.log(data);
+        const ret: { code: number, message: string, data: UserDTO } = JSON.parse(data);
+        if (ret.code === 0) {
+          // router.refresh();
+          // redirect to todolist page
+          // router.push(`/biz/todolist?${Math.random().toString()}`);
+          console.log(`Register successed, router.push to: ${ROUTES.user.edit}`);
+          router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
+        } else {
+          setSuggestion(ret.message);
+          console.log(`Register failed: ${ret.message}`);
+        }
+      });
+  }
+
+  const handleRegisterApi = () => {
+
     const url = ROUTES.api.userRegister;
     const options = {
       method: "POST",
@@ -66,14 +104,14 @@ const Register = () => {
         authType: 'register'
       }),
     };
-    
+
     console.log(`POST name: ${name}, password: ${password}`);
 
     fetch(url, options)
       .then((response) => response.json())
-      .then((data) => {        
+      .then((data) => {
         console.log(data);
-        if (data.code === 0) {          
+        if (data.code === 0) {
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           // router.push(ROUTES.home);

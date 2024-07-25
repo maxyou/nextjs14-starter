@@ -1,35 +1,51 @@
 'use server';
-import { UserAdd, UserDTO } from '@/app/dto/User';
+import { toUserDTO, UserAdd, UserDTO, UserLogin, UserRegister } from '@/app/dto/User';
 import { PrismaClient, User } from '@prisma/client';
+import { getJoseJwtToken } from '@/utilities/calc';
+import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
+import { cookies } from 'next/headers'
+
 const prisma = new PrismaClient();
 
-export async function serverActionfetchUsers(): Promise<string> {
-    console.log("server action GET all users");
-    const users = await prisma.user.findMany();
-    return JSON.stringify(users);
+export async function serverActionRegister(userRegister: UserRegister): Promise<string> {
+
+    console.log("server action Register");
+    console.log(`POST name: ${userRegister.name}, password: ${userRegister.password}`);
+
+    try {
+
+        const newUser = await prisma.user.create({
+            data: { ...userRegister, authType: 'register', logined: true },
+        });
+
+        console.log(`prisma.user.create return: ${JSON.stringify(newUser)}`)
+
+        // const { id, name , email } = newUser as { id: string; name: string; email: string; };
+
+        if (!newUser) {
+            return JSON.stringify({ code: -1, message: 'Failed to register user.' });
+        }
+
+        const userDTO = toUserDTO(newUser);
+
+        const token = await getJoseJwtToken(userDTO!);
+
+        const res = JSON.stringify({ code: 0, message: 'success', data: userDTO })
+
+        const cookieOptions = {
+            httpOnly: true,
+            secure: true
+        };
+
+        const cookieStore = cookies();
+        cookieStore.set('jwt', token, cookieOptions);
+
+        return res;
+
+    } catch (error) {
+        console.error('Error during user register:', error);
+        return JSON.stringify({ code: -1, message: 'Failed to register user.' });
+    }
 }
 
-export async function serverActionAddUser(userAdd:UserAdd): Promise<string> {
-    console.log("server action POST add user");
-    const newUser = await prisma.user.create({
-        data: userAdd
-    });
-    return JSON.stringify(newUser);
-}
-
-export async function serverActionUpdateUser(user:UserDTO): Promise<string> {
-    console.log("server action PUT update user");
-    const updatedUser = await prisma.user.update({
-        where: { id: user.id },
-        data: user    
-    });
-    return JSON.stringify(updatedUser);
-}
-
-export async function serverActionDeleteUser(id:string): Promise<string> {
-    console.log("server action DELETE delete user");
-    const deletedUser = await prisma.user.delete({
-        where: { id }
-    });
-    return JSON.stringify(deletedUser);
-}

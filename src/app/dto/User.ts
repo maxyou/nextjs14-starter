@@ -11,6 +11,13 @@ export interface UserLogin {
     password: string;
 }
 
+export interface UserRegister {
+    authType: string;
+    name: string;
+    email?: string;
+    password: string;
+}
+
 export interface UserDTO {
     id: string;
     authType: string;
