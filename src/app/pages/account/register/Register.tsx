@@ -77,6 +77,7 @@ const Register = () => {
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           // router.push(ROUTES.home);
+          router.push(ROUTES.user.edit);
         }
       });
 
