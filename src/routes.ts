@@ -12,6 +12,7 @@ export const ROUTES = {
   api: {
     userLogin: '/api/account/login',
     userRegister: '/api/account/register',
+    userLogout: '/api/account/logout',
     user: '/api/user',
   },
   // 其他路由和API端点

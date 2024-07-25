@@ -15,7 +15,7 @@ export async function middleware(request: NextRequest) {
     
     const { pathname } = request.nextUrl;
     if(!middlewareMatcher(pathname)) {
-      console.log('====middleware.ts:!middlewareMatcher(pathname)')
+      console.log(`====middleware.ts:!middlewareMatcher(${pathname})`)
       return NextResponse.next();
     }
 

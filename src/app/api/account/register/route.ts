@@ -19,21 +19,21 @@ export async function POST(request: Request) {
 
   try {
     const newUser = await prisma.user.create({
-      data: body,
+      data: {...body, logined: true},
     });
 
     console.log(`prisma.user.create return: ${JSON.stringify(newUser)}`)
 
     // const { id, name , email } = newUser as { id: string; name: string; email: string; };
-    const jwtUser = toUserDTO(newUser);
+    const userDTO = toUserDTO(newUser);
 
-    if (!jwtUser) {
+    if (!userDTO) {
       return NextResponse.json({ code: -1, message: 'Failed to register user.' });
     }
 
-    const jwtToken = await getJoseJwtToken(jwtUser);
+    const jwtToken = await getJoseJwtToken(userDTO);
 
-    const res = NextResponse.json({ code: 0, message: 'success', data: jwtUser })
+    const res = NextResponse.json({ code: 0, message: 'success', data: userDTO })
 
     const cookieOptions = {
       httpOnly: true,
