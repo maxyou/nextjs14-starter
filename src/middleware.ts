@@ -54,7 +54,7 @@ export async function middleware(request: NextRequest) {
     if(decodedToken.code !== 0) {     
 
       console.log('middleware.ts, decodedToken.code !== 0, redirect to /user/login')
-      return NextResponse.redirect(new URL('/user/login', request.url))
+      return NextResponse.redirect(new URL('/pages/account/login', request.url))
     }
 
     const jwtUser = decodedToken.jwtPayloadWithUser!.jwtUser;
@@ -83,9 +83,10 @@ export async function middleware(request: NextRequest) {
 export const config = {
     matcher: [
       // '/about',
-      // '/user/(.*)',
+      // '/api/(.*)',     //ok
       // '/api/user/(.*)',
-      '/biz/(.*)',     
-      '/api/biz/(.*)',
+      // '/api/user',
+      // '/pages/(.*)',
+      // '/pages/user-edit',
     ],
 }

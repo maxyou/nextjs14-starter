@@ -3,13 +3,10 @@ import PageClient from './PageClient'
 export default async function PageServer() {
 
   return (
-    <div>
+    <div className="flex justify-center items-center h-screen">
       <div>
         <PageClient />
       </div>
-      {/* <ChildLayout>
-        <Page />
-      </ChildLayout> */}
     </div>
   )
 }

@@ -8,12 +8,7 @@ const ClientPage: React.FC = () => {
 
     return (
         <div>
-                <div>
-
-                    {/* <p>ClientPage</p>
-                    {
-                        jwtUser && JSON.stringify({ jwtUser })
-                    } */}
+                <div>                    
                     <Login />
                 </div>
         </div>
