@@ -31,17 +31,12 @@ export async function POST(request: NextRequest) {
     console.log("api POST");
 
     try {
-        const body = await request.json();
+        const body = await request.json() as UserAdd;
         console.log(body.name, body.email);
         console.log(JSON.stringify(body));
 
         const newUser = await prisma.user.create({
-            data: {
-                name: body.name,
-                authType: 'register',
-                email: body.email,
-                password: body.password,
-            },
+            data: body,
         });
         return NextResponse.json(toUserDTO(newUser), { status: 201 });
     } catch (error) {

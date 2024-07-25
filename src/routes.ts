@@ -11,6 +11,7 @@ export const ROUTES = {
   api: {
     userLogin: '/api/account/login',
     userRegister: '/api/account/register',
+    user: '/api/user',
   },
   // 其他路由和API端点
 } as const;

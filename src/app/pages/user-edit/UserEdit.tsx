@@ -6,6 +6,7 @@ import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
 import { UserDTO, UserAdd } from '@/app/dto/User';
 import { codeConfig } from '@/config.mjs';
+import { ROUTES } from '@/routes';
 
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
@@ -25,7 +26,7 @@ const UserEdit = () => {
         console.log(codeConfig.fetchServerCode);
 
         if (codeConfig.fetchServerCode === 'api') {
-            const response = await fetch('/api/user');
+            const response = await fetch(ROUTES.api.user);
             const data = await response.json();
             console.log(data);
             setUsers(data);
@@ -67,7 +68,7 @@ const UserEdit = () => {
         if (isEditMode) {
             console.log(codeConfig.fetchServerCode);
             if (codeConfig.fetchServerCode === 'api') {
-                const response = await fetch(`/api/user`, {
+                const response = await fetch(ROUTES.api.user, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -82,31 +83,39 @@ const UserEdit = () => {
             }
             fetchUsers();
         } else {
-            // const response = await fetch('/api/user', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify({ name, email }),
-            // });
-            // const newUser = await response.json();
-            const newUser = await serverActionAddUser({ name, email, password, nickName, authType: 'register' });
-            console.log(newUser);
+            if (codeConfig.fetchServerCode === 'api') {
+                const response = await fetch(ROUTES.api.user, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name, email, password, nickName, authType: 'register' }),
+                });
+                const newUser = await response.json();
+                console.log(newUser);
+            } else if (codeConfig.fetchServerCode === 'serverAction') {
+                const newUser = await serverActionAddUser({ name, email, password, nickName, authType: 'register' });
+                console.log(newUser);
+            }
             fetchUsers();
         }
         closeModal();
     };
 
     const deleteUser = async (id: string, name: string) => {
-        // await fetch(`/api/user?id=${id}`, {
-        //     method: 'DELETE',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        // });
 
         if (window.confirm(`Confirm to delete ${name} ?`)) {
-            await serverActionDeleteUser(id);
+            if (codeConfig.fetchServerCode === 'api') {
+                await fetch(`${ROUTES.api.user}?id=${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+            }
+            else if (codeConfig.fetchServerCode === 'serverAction') {
+                await serverActionDeleteUser(id);
+            }
             fetchUsers();
         } else {
             // alert("再见");

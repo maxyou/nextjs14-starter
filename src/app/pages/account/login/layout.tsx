@@ -1,7 +1,7 @@
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div>
-      <div>/account/register/layout</div>
+      <div>/account/login/layout</div>
       {children}
     </div>
   )

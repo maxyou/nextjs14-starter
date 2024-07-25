@@ -97,7 +97,7 @@ function middlewareMatcher(pathname: string) {
 //Does not support variables, only hard-coded paths
 export const config = {
     matcher: [
-      '/(.*)',
+      // '/(.*)',
       // '/:path*',
       // '/about',
       // '/api/(.*)',     //ok

@@ -8,9 +8,9 @@ const ClientPage: React.FC = () => {
 
     return (
         <div>
-                <div>                    
-                    <Login />
-                </div>
+            <div>
+                <Login />
+            </div>
         </div>
     )
 }
