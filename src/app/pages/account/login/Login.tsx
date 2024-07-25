@@ -57,7 +57,7 @@ const Login = () => {
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
-          router.push(ROUTES.user.edit);
+          router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
         } else {
           setSuggestion(data.message);
           console.log(`Login failed: ${data.message}`);

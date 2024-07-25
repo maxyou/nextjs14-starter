@@ -10,8 +10,8 @@ const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
 
-  console.log('req.method:', request.method)
-  console.log('req.url', request.url)
+  // console.log('req.method:', request.method)
+  // console.log('req.url', request.url)
 
   // const { name: nameRequest, password, email } = await request.json();
   // console.log(`POST name: ${nameRequest}, password: ${password}, email:${email}`);

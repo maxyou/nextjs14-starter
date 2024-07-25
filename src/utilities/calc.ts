@@ -70,9 +70,9 @@ export async function getJoseJwtToken(jwtUser: JwtUser): Promise<string> {
         .setExpirationTime(exp)
         .setIssuedAt(iat)
         .setNotBefore(iat);
-    console.log(`using jose, tokenBeforeSign:${JSON.stringify(tokenBeforeSign)}`);
+    // console.log(`using jose, tokenBeforeSign:${JSON.stringify(tokenBeforeSign)}`);
     const token = await tokenBeforeSign.sign(new TextEncoder().encode(secret));
-    console.log(`using jose, token:${JSON.stringify(token)}`);
+    // console.log(`using jose, token:${JSON.stringify(token)}`);
 
     return token;
 }

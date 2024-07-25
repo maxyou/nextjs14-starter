@@ -9,8 +9,6 @@ import { ROUTES } from '@/routes';
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
 
-  console.log('ROUTES.user.edit:', ROUTES.user.edit)
-
     console.log('====middleware.ts, request.url:', request.url)
     // console.log('middleware.ts, request.nextUrl.pathname:', request.nextUrl.pathname)
     
@@ -37,29 +35,28 @@ export async function middleware(request: NextRequest) {
     // headers.set('middlewareSet', 'mydata');
 
     const cookies = headers.get('cookie')
-    console.log('====middleware.ts, cookies:', cookies)
+    // console.log('====middleware.ts, cookies:', cookies)
 
     const parsedCookies = cookie.parse(cookies || '');
 
     // Access the specific item you want
     const jwtToken = parsedCookies.jwt;
-    console.log('====middleware.ts, jwtToken:', jwtToken)
+    // console.log('====middleware.ts, jwtToken:', jwtToken)
 
     const secret = process.env.JWT_SECRET as string;
-    console.log('====middleware.ts, secret:', secret)
+    // console.log('====middleware.ts, secret:', secret)
 
     const decodedToken = await joseVerify(jwtToken, secret);
-    console.log('====middleware.ts, decodedToken:', JSON.stringify(decodedToken))
+    // console.log('====middleware.ts, decodedToken:', JSON.stringify(decodedToken))
     
     if(decodedToken.code !== 0) {     
-
       console.log('====middleware.ts, decodedToken.code !== 0, redirect to ROUTES.account.login')
       return NextResponse.redirect(new URL(ROUTES.account.login, request.url))
     }
 
     const jwtUser = decodedToken.jwtPayloadWithUser!.jwtUser;
     headers.set('middlewareSet', JSON.stringify(jwtUser));
-    console.log('====middleware.ts, user:', jwtUser)
+    console.log('====middleware.ts, get user from token:', jwtUser)
 
     const resp = NextResponse.next({
       request: {
@@ -82,7 +79,7 @@ export async function middleware(request: NextRequest) {
 function middlewareMatcher(pathname: string) {
     // Return true if the middleware should be executed for the given URL
 
-    console.log('middlewareMatcher, pathname:', pathname)
+    // console.log('middlewareMatcher, pathname:', pathname)
 
     switch (pathname) {
       case ROUTES.user.edit:

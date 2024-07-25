@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const id = searchParams.get('id');
 
     if (id) {
-        console.log(id);
+        console.log(`api GFT user by id:${id}`);
         const user = await prisma.user.findUnique({ where: { id } });
         if (user) {
             return NextResponse.json(toUserDTO(user), { status: 200 });
@@ -32,8 +32,8 @@ export async function POST(request: NextRequest) {
 
     try {
         const body = await request.json() as UserAdd;
-        console.log(body.name, body.email);
-        console.log(JSON.stringify(body));
+        // console.log(body.name, body.email);
+        // console.log(JSON.stringify(body));
 
         const newUser = await prisma.user.create({
             data: body,
