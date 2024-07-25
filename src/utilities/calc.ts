@@ -1,3 +1,4 @@
+import { UserDTO } from '@/app/dto/User';
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 
 // export async function sign(payload: string, secret: string): Promise<string> {
@@ -40,21 +41,21 @@ export async function joseVerify(token: string, secret: string): Promise<JoseJwt
     }
 }
 
-export interface JwtUser {
-    id: string;
-    name: string;
-    nickname?: string;
-    email?: string;
-    avatar?: string;
-    from: string;
+export interface JwtUser extends UserDTO {
+    // id: string;
+    // name: string;
+    // nickName?: string;
+    // email?: string;
+    // avatar?: string;
+    // authType: string;
     // sub?: string;
 }
 
 export function getShowNameFromJwtUser(jwtUser: JwtUser): string {
-    if (jwtUser.from === "register") {
+    if (jwtUser.authType === "register") {
         return jwtUser.name;
-    }else if (jwtUser.from === "google") {
-        return jwtUser.nickname || jwtUser.name;
+    }else if (jwtUser.authType === "google") {
+        return jwtUser.nickName || jwtUser.name;
     }
     
     return jwtUser.id;

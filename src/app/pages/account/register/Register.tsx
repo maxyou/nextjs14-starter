@@ -60,8 +60,10 @@ const Register = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: name,
-        password: password,
+        name,
+        email,
+        password,
+        authType: 'register'
       }),
     };
     
@@ -74,7 +76,7 @@ const Register = () => {
         if (data.code === 0) {          
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
-          router.push(ROUTES.home);
+          // router.push(ROUTES.home);
         }
       });
 
@@ -85,7 +87,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center bg-gray-100">
       <div className="max-w-md w-full bg-white p-8 shadow-md rounded-md">
         <h2 className="text-2xl font-bold mb-6">Register</h2>
         <div className="mb-4">
