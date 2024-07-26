@@ -61,3 +61,7 @@ export interface JwtUser extends UserDTO {
     // authType: string;
     // sub?: string;
 }
+
+export interface UserContext extends UserDTO {
+    // token: string;
+}

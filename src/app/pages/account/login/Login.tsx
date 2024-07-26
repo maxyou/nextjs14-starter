@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MyContext } from '@/app/MyContext';
 import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
@@ -11,6 +12,9 @@ import { ROUTES } from '@/routes';
 // ReactModal.setAppElement('#__next'); // To prevent screen readers from focusing on background content
 
 const Login = () => {
+
+  const  userContext = useContext(MyContext);
+  console.log(`userContext: ${JSON.stringify(userContext)}`);
 
   const router = useRouter();
 
@@ -58,6 +62,7 @@ const Login = () => {
             // redirect to todolist page
             // router.push(`/biz/todolist?${Math.random().toString()}`);
             console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
+            userContext!.user =ret.data;
             router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
           } else {
             setSuggestion(ret.message);
@@ -88,6 +93,8 @@ const Login = () => {
       .then((data) => {
         console.log(data);
         if (data.code === 0) {
+          console.log(`Login successed, context setUser to: ${JSON.stringify(data.data)}`);
+          userContext?.setUser(data.data);
           // router.refresh();
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
