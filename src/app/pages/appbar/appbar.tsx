@@ -9,8 +9,8 @@ import { MyContext } from '@/app/MyContext';
 
 const AppBar: React.FC = () => {
 
-  const userContext = useContext(MyContext);
-  console.log(`AppBar userContext: ${JSON.stringify(userContext)}`);
+  const myContext = useContext(MyContext);
+  console.log(`AppBar userContext: ${JSON.stringify(myContext)}`);
 
   const handleLogout = () => {
 
@@ -51,7 +51,7 @@ const AppBar: React.FC = () => {
           Home
         </button>
       </Link>
-      <div className="text-white">{JSON.stringify(userContext?.user?.name)}</div>
+      <div className="text-white">{JSON.stringify(myContext?.user?.name)}</div>
       <div className="flex space-x-4">
         <Link href="/pages/account/login">
           <button className="text-white">登录</button>

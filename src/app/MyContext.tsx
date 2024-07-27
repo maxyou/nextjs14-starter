@@ -10,7 +10,7 @@ import { codeConfig } from '@/config.mjs';
 // 定义Context的类型
 interface MyContextType {
     user: UserContext | null;
-    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+    setUser: React.Dispatch<React.SetStateAction<UserContext | null>>;
 }
 
 // 创建Context
@@ -18,11 +18,8 @@ export const MyContext = createContext<MyContextType | undefined>(undefined);
 
 // 创建自定义Provider组件
 export const MyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [user, setUser] = useState<User | null>(null);
-  
-    const handleSetUser = (user: User) => {
-        setUser(user);
-    }
+    const [user, setUser] = useState<UserContext | null>(null);
+    console.log(`MyContext.tsx: MyProvider user: ${JSON.stringify(user)}`);
 
     return (
       <MyContext.Provider value={{ user, setUser }}>

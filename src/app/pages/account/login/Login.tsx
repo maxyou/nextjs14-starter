@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
-import { UserDTO, UserAdd } from '@/app/dto/User';
+import { UserDTO, UserAdd, UserContext } from '@/app/dto/User';
 import { codeConfig } from '@/config.mjs';
 import { serverActionLogin } from './serverAction';
 import { ROUTES } from '@/routes';
@@ -13,8 +13,8 @@ import { ROUTES } from '@/routes';
 
 const Login = () => {
 
-  const  userContext = useContext(MyContext);
-  console.log(`userContext: ${JSON.stringify(userContext)}`);
+  const  myContext = useContext(MyContext);
+  console.log(`userContext: ${JSON.stringify(myContext)}`);
 
   const router = useRouter();
 
@@ -62,7 +62,7 @@ const Login = () => {
             // redirect to todolist page
             // router.push(`/biz/todolist?${Math.random().toString()}`);
             console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
-            userContext!.user =ret.data;
+            myContext?.setUser(ret.data);
             router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
           } else {
             setSuggestion(ret.message);
@@ -94,7 +94,7 @@ const Login = () => {
         console.log(data);
         if (data.code === 0) {
           console.log(`Login successed, context setUser to: ${JSON.stringify(data.data)}`);
-          userContext?.setUser(data.data);
+          myContext?.setUser(data.data);
           // router.refresh();
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
