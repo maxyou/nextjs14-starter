@@ -51,13 +51,8 @@ export async function middleware(request: NextRequest) {
     
     if(decodedToken.code !== 0) {     
       console.log('====middleware.ts, decodedToken.code !== 0, redirect to ROUTES.account.login')
-      // return NextResponse.redirect(new URL(ROUTES.account.login, request.url))
+      return NextResponse.redirect(new URL(ROUTES.account.login, request.url))
       // return NextResponse.redirect(new URL(ROUTES.home, request.url))
-      // return NextResponse.redirect(new URL('/pages/account/login', request.url))
-      // return NextResponse.redirect(new URL('/pages', request.url))
-      // return NextResponse.redirect(new URL(ROUTES.account.register, request.url))
-      // return NextResponse.redirect(new URL(ROUTES.test, request.url))
-      return NextResponse.redirect(new URL(ROUTES.list, request.url))
     }
 
     const jwtUser = decodedToken.jwtPayloadWithUser!.jwtUser;

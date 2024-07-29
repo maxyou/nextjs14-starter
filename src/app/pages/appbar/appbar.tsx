@@ -51,8 +51,9 @@ const AppBar: React.FC<ClientPageProps> = ({ middlewareSet }) => {
         if (data.code === 0) {
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
-          // router.push(ROUTES.home);
+          router.push(ROUTES.home);
           // router.push(ROUTES.user.edit);
+          // router.push(ROUTES.account.login);
           router.refresh();
         }
       });
