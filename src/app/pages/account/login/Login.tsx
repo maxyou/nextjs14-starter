@@ -64,6 +64,7 @@ const Login = () => {
             console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
             // myContext?.updateUser(ret.data);
             router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
+            router.refresh();            
           } else {
             setSuggestion(ret.message);
             console.log(`Login failed: ${ret.message}`);
@@ -100,6 +101,7 @@ const Login = () => {
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
           router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
+          router.refresh();  
         } else {
           setSuggestion(data.message);
           console.log(`Login failed: ${data.message}`);

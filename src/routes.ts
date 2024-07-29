@@ -9,6 +9,8 @@ export const ROUTES = {
     login: '/pages/account/login',
   },
   home: '/pages',
+  list: '/pages/list',
+  login: '/pages/account/login',
   api: {
     userLogin: '/api/account/login',
     userRegister: '/api/account/register',

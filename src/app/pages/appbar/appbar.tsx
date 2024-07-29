@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext,  } from 'react';
 // import { HomeIcon } from '@heroicons/react/solid';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ROUTES } from '@/routes';
 import { MyContext } from '@/app/MyContext';
@@ -12,6 +13,8 @@ interface ClientPageProps {
 }
 
 const AppBar: React.FC<ClientPageProps> = ({ middlewareSet }) => {
+  
+  const router = useRouter();
 
   const myContext = useContext(MyContext);
   console.log(`AppBar props middlewareSet: ${middlewareSet}`);
@@ -50,6 +53,7 @@ const AppBar: React.FC<ClientPageProps> = ({ middlewareSet }) => {
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           // router.push(ROUTES.home);
           // router.push(ROUTES.user.edit);
+          router.refresh();
         }
       });
 
