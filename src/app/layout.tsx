@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { MyContext, MyProvider } from "./MyContext";
-import AppBar from "./pages/appBar/AppBar";
+import AppBar from "../common/appBar/AppBar";
 import { headers, cookies } from 'next/headers'
 import Info from "@/common/info/Info";
 
