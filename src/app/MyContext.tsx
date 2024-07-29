@@ -3,7 +3,7 @@
 import React, { createContext, ReactNode, useContext, useState, useCallback, useEffect } from 'react';
 import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
-import { UserDTO, UserContext } from '@/app/dto/User';
+import { UserDTO, UserContext } from '@/common/interface/User';
 import { codeConfig } from '@/config.mjs';
 
 

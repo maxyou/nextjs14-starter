@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
 import { serverActionfetchUsers, serverActionAddUser, serverActionUpdateUser, serverActionDeleteUser } from './serverAction';
-import { UserDTO, UserAdd } from '@/app/dto/User';
+import { UserDTO, UserAdd } from '@/common/interface/User';
 import { codeConfig } from '@/config.mjs';
 import { ROUTES } from '@/routes';
 

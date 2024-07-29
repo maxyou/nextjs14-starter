@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 // import jwt from 'jsonwebtoken';
 import cookie from 'cookie';
-import { JwtUser, UserDTO, UserAdd } from '@/app/dto/User';
-import { joseVerify, getJoseJwtToken } from "./utilities/calc";
+import { JwtUser, UserDTO, UserAdd } from '@/common/interface/User';
+import { joseVerify, getJoseJwtToken } from "./common/utilities/calc";
 import { ROUTES } from '@/routes';
 
 // This function can be marked `async` if using `await` inside

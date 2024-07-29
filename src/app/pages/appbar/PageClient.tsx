@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AppBar from './AppBar';
 import { MyContext } from '@/app/MyContext';
-import { JwtUser } from '@/app/dto/User'
+import { JwtUser } from '@/common/interface/User'
 
 interface ClientPageProps {
   middlewareSet: string; // Replace 'any' with the appropriate type for middlewareSet

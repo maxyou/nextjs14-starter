@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import ReactModal from 'react-modal';
 import Link from "next/link";
 import { PrismaClient, User } from '@prisma/client';
-import { UserDTO, UserAdd, JwtUser } from '@/app/dto/User';
+import { UserDTO, UserAdd, JwtUser } from '@/common/interface/User';
 import { codeConfig } from '@/config.mjs';
 import { serverActionRegister } from './serverAction';
 import { ROUTES } from '@/routes';

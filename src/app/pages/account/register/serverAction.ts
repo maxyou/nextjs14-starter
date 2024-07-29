@@ -1,7 +1,7 @@
 'use server';
-import { toUserDTO, UserAdd, UserDTO, UserLogin, UserRegister } from '@/app/dto/User';
+import { toUserDTO, UserAdd, UserDTO, UserLogin, UserRegister } from '@/common/interface/User';
 import { PrismaClient, User } from '@prisma/client';
-import { getJoseJwtToken } from '@/utilities/calc';
+import { getJoseJwtToken } from '@/common/utilities/calc';
 import jwt from 'jsonwebtoken';
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 import { cookies } from 'next/headers'

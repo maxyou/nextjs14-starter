@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
-import { UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
+import { UserAdd, UserDTO, toUserDTO } from '@/common/interface/User';
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 

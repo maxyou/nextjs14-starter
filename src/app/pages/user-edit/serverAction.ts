@@ -1,5 +1,5 @@
 'use server';
-import { UserAdd, UserDTO, toUserDTO } from '@/app/dto/User';
+import { UserAdd, UserDTO, toUserDTO } from '@/common/interface/User';
 import { PrismaClient, User } from '@prisma/client';
 const prisma = new PrismaClient();
 

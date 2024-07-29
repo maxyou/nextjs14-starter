@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
-import { JwtUser, UserDTO, UserAdd } from '@/app/dto/User';
+import { JwtUser, UserDTO, UserAdd } from '@/common/interface/User';
 
 // export async function sign(payload: string, secret: string): Promise<string> {
 //     const iat = Math.floor(Date.now() / 1000);

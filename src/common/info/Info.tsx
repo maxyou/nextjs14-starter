@@ -5,7 +5,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { ROUTES } from '@/routes';
 import { MyContext } from '@/app/MyContext';
-import { JwtUser } from '@/app/dto/User'
+import { JwtUser } from '@/common/interface/User'
 
 
 const Info: React.FC = () => {
