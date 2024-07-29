@@ -7,7 +7,7 @@ export async function serverActionfetchUsers(): Promise<string> {
     console.log("server action GET all users");
     const users = await prisma.user.findMany();    
     const usersDTO = users.map(toUserDTO);
-    console.log(JSON.stringify(usersDTO));
+    // console.log(JSON.stringify(usersDTO));
     return JSON.stringify(usersDTO);
 }
 

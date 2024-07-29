@@ -5,12 +5,28 @@ import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import { ROUTES } from '@/routes';
 import { MyContext } from '@/app/MyContext';
+import { JwtUser } from '@/app/dto/User'
 
+interface ClientPageProps {
+  middlewareSet: string; // Replace 'any' with the appropriate type for middlewareSet
+}
 
-const AppBar: React.FC = () => {
+const AppBar: React.FC<ClientPageProps> = ({ middlewareSet }) => {
 
   const myContext = useContext(MyContext);
-  console.log(`AppBar userContext: ${JSON.stringify(myContext)}`);
+  console.log(`AppBar props middlewareSet: ${middlewareSet}`);
+
+  let jwtUser = null;
+  if (middlewareSet) {
+    jwtUser = JSON.parse(middlewareSet) as JwtUser
+    // myContext?.updateUser(jwtUser);  
+  }
+
+  useEffect(() => {    
+    if (jwtUser) {
+      myContext?.updateUser(jwtUser)
+    }
+  }, [middlewareSet]);
 
   const handleLogout = () => {
 
@@ -21,15 +37,15 @@ const AppBar: React.FC = () => {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ }),
-    };    
-    
+      body: JSON.stringify({}),
+    };
+
 
     fetch(url, options)
       .then((response) => response.json())
-      .then((data) => {        
+      .then((data) => {
         console.log(data);
-        if (data.code === 0) {          
+        if (data.code === 0) {
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);
           // router.push(ROUTES.home);
@@ -51,7 +67,8 @@ const AppBar: React.FC = () => {
           Home
         </button>
       </Link>
-      <div className="text-white">{JSON.stringify(myContext?.user?.name)}</div>
+      {/* <div className="text-white">{JSON.stringify(myContext?.user?.name)}</div> */}
+      <div className="text-white">{jwtUser?.name}</div>
       <div className="flex space-x-4">
         <Link href="/pages/account/login">
           <button className="text-white">登录</button>

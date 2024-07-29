@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { MyContext, MyProvider } from "./MyContext";
 import AppBar from "./pages/appBar/AppBar";
+import { headers, cookies } from 'next/headers'
+import Info from "@/common/info/Info";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,15 +18,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const headersList = headers()
+  const middlewareSet = headersList.get('middlewareSet') || ''
+  console.log(`Home middlewareSet: ${middlewareSet}`)
+
   return (
     <html lang="en">
       <MyProvider>
         <body className={inter.className}>
-          <AppBar />
+          <AppBar  middlewareSet={middlewareSet}/>
           <div>root layout</div>
           <div id="root">
             {children}
           </div>
+          <Info />
         </body>
       </MyProvider>
     </html>

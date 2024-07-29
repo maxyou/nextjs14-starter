@@ -62,7 +62,7 @@ const Login = () => {
             // redirect to todolist page
             // router.push(`/biz/todolist?${Math.random().toString()}`);
             console.log(`Login successed, router.push to: ${ROUTES.user.edit}`);
-            myContext?.setUser(ret.data);
+            // myContext?.updateUser(ret.data);
             router.push(`${ROUTES.user.edit}?${Math.random().toString()}`);
           } else {
             setSuggestion(ret.message);
@@ -94,7 +94,7 @@ const Login = () => {
         console.log(data);
         if (data.code === 0) {
           console.log(`Login successed, context setUser to: ${JSON.stringify(data.data)}`);
-          myContext?.setUser(data.data);
+          // myContext?.updateUser(data.data);
           // router.refresh();
           // redirect to todolist page
           // router.push(`/biz/todolist?${Math.random().toString()}`);

@@ -7,9 +7,6 @@ export default async function PageServer() {
       <div>
         <PageClient />
       </div>
-      {/* <ChildLayout>
-        <Page />
-      </ChildLayout> */}
     </div>
   )
 }
