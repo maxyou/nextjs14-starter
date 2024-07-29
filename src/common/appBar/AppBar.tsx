@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ROUTES } from '@/routes';
 import { MyContext } from '@/app/MyContext';
-import { JwtUser } from '@/common/interface/User'
+import { JwtUser, UserDTO } from '@/common/interface/User'
+import { codeConfig } from '@/config.mjs';
+import { serverActionLogout } from './serverAction';
 
 interface ClientPageProps {
   middlewareSet: string; // Replace 'any' with the appropriate type for middlewareSet
@@ -32,6 +34,33 @@ const AppBar: React.FC<ClientPageProps> = ({ middlewareSet }) => {
   }, [middlewareSet]);
 
   const handleLogout = () => {
+
+    if (codeConfig.fetchServerCode === 'api') {
+      handleLogoutApi();
+    } else if (codeConfig.fetchServerCode === 'serverAction') {
+      handleLogoutServerAction();
+    }
+  }
+
+  const handleLogoutServerAction = () => {
+
+    console.log(`server action logout`);
+
+    serverActionLogout()
+      .then((data) => {
+        console.log(data);
+        const ret:{code:number, message:string, data:UserDTO} = JSON.parse(data);
+        if (ret.code === 0) {
+          router.push(ROUTES.home);
+          router.refresh();
+        } else {          
+          console.log(`Login failed: ${ret.message}`);
+        }
+      });
+}
+  const handleLogoutApi = () => {
+
+    console.log(`api logout`);
 
     const url = ROUTES.api.userLogout;
     const options = {
